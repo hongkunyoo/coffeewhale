@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import urllib2
 import os
@@ -9,7 +10,7 @@ import datetime
 import pytz
 import ssl
 import inspect
-from __future__ import print_function
+
 
 
 glob_conf_path = None
