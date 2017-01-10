@@ -1,0 +1,8 @@
+.DS_Store
+*.pem
+.env/
+*.pyc
+*.publishsettings
+.idea/
+dist/
+coffeewhale.egg-info/

@@ -67,21 +67,22 @@ def notify(**kargs):
     del kargs['func']
     conf_file = glob_conf_path
     if conf_file is None:
-        f_path = os.path.abspath(inspect.getmodule(func).__file__)
-        f_path = '/'.join(f_path.split('/')[:-1])
-        conf_file = f_path + '/conf.json'
+    #     f_path = os.path.abspath(inspect.getmodule(func).__file__)
+    #     f_path = '/'.join(f_path.split('/')[:-1])
+    #     conf_file = f_path + '/conf.json'
         
+    # if os.path.isfile(conf_file):
+    #     with open(conf_file) as conf_file_f:
+    #         configure = json.load(conf_file_f)
+    # else:
+        conf_file = '%s/.coffeewhale.json' % os.environ['HOME']
     if os.path.isfile(conf_file):
         with open(conf_file) as conf_file_f:
             configure = json.load(conf_file_f)
     else:
-        conf_file = '%s/.coffeewhale.json' % os.environ['HOME']
-        if os.path.isfile(conf_file):
-            with open(conf_file) as conf_file_f:
-                configure = json.load(conf_file_f)
-        else:
-            print('configure file is not provided!')
-            sys.exit(0)
+        print('configure file is not provided!')
+        sys.exit(0)
+    
     
     if 'channel' not in kargs or kargs['channel'] == None:
         channel = configure['default_channel']
