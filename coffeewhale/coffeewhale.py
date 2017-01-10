@@ -9,6 +9,7 @@ import datetime
 import pytz
 import ssl
 import inspect
+from __future__ import print_function
 
 
 glob_conf_path = None
@@ -31,8 +32,8 @@ def inner_wrapper(func, channel, *args, **kargs):
         traceback.print_tb(exc_traceback, file=tb_output)
         val = dict()
         val['exception'] = str(e)
-        print tb_output.getvalue()
-        print e
+        print(tb_output.getvalue())
+        print(e)
     # val['exception2'] = str(tb_output.getvalue())
     end = time.time()
     val["func_name"] = func.__name__
@@ -116,11 +117,11 @@ def notify(**kargs):
 @alarmable
 def run(val=1):
     start = time.time()
-    print 'start'
+    # print 'start'
     i = 1
     for i in xrange(10000000):
         i * 102
-    print 'end'
+    # print 'end'
     [0, 1][int(val)]
     t = time.time() - start
 
@@ -133,4 +134,4 @@ def run(val=1):
 
 
 if __name__ == "__main__":
-    print run(sys.argv[1])
+    print(run(sys.argv[1]))
