@@ -1,16 +1,24 @@
 from __future__ import print_function
 import json
-import urllib2
 import os
 import time
-import StringIO
 import traceback
 import sys
 import datetime
 import pytz
 import ssl
 import inspect
+try:
+    from urllib.request import *
+    from urllib.parse import *
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import *
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 glob_conf_path = None
@@ -28,7 +36,7 @@ def inner_wrapper(func, channel, *args, **kargs):
         if not isinstance(val, dict):
             val = {"return_value": val}
     except Exception as e:
-        tb_output = StringIO.StringIO()
+        tb_output = StringIO()
         exc_type, exc_value, exc_traceback = sys.exc_info()
         traceback.print_tb(exc_traceback, file=tb_output)
         val = dict()
@@ -107,10 +115,14 @@ def notify(**kargs):
     
     url = configure['channel'][channel]
     # print url
-    req = urllib2.Request(url)
+    req = Request(url)
     req.add_header('Content-Type', 'application/json')
     context = ssl._create_unverified_context()
-    response = urllib2.urlopen(req, json.dumps(payload), context=context)
+
+    f = json.dumps(payload)
+    f = f.encode('utf-8')
+
+    response = urlopen(req, data=f, context=context)
     
     return kargs
     
@@ -120,7 +132,7 @@ def run(val=1):
     start = time.time()
     # print 'start'
     i = 1
-    for i in xrange(10000000):
+    for i in range(10000000):
         i * 102
     # print 'end'
     [0, 1][int(val)]
@@ -135,4 +147,4 @@ def run(val=1):
 
 
 if __name__ == "__main__":
-    print(run(sys.argv[1]))
+    print(run())
