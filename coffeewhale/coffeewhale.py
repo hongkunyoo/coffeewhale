@@ -73,16 +73,13 @@ def alarmable(func):
 
 def notify(**kargs):
     url = None
-    print(os.environ)
     if "COFFEE_WHALE_URL" in os.environ:
         url = os.environ['COFFEE_WHALE_URL']
-        print('in os env: %s' % url)
 
     if kargs['url'] is not None:
         url = kargs['url']
-        print('in url in kargs: %s' % url)
     del kargs['url']
-    
+
     if url is None:
         raise Exception('Provide url or COFFEE_WHALE_URL')
 
