@@ -3,6 +3,7 @@ import json
 import os
 import time
 import traceback
+import platform
 import sys
 import datetime
 import pytz
@@ -23,6 +24,7 @@ except ImportError:
 
 glob_conf_path = None
 
+
 def conf(path):
     global glob_conf_path
     glob_conf_path = path
@@ -31,10 +33,9 @@ def conf(path):
 def inner_wrapper(func, channel, *args, **kargs):
     
     start = time.time()
+    val = {}
     try:
-        val = func(*args, **kargs)
-        if not isinstance(val, dict):
-            val = {"return_value": val}
+        func(*args, **kargs)
     except Exception as e:
         tb_output = StringIO()
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -46,9 +47,7 @@ def inner_wrapper(func, channel, *args, **kargs):
     # val['exception2'] = str(tb_output.getvalue())
     end = time.time()
     val["func_name"] = func.__name__
-    val["func"] = func
-    val["argv"] = sys.argv
-    val["channel"] = channel
+    val["url"] = channel
     elapsed = end - start
     if elapsed > 1:
         elapsed = int(elapsed)
@@ -73,36 +72,19 @@ def alarmable(func):
 
 
 def notify(**kargs):
-    func = kargs["func"]
-    del kargs['func']
-    conf_file = glob_conf_path
-    if conf_file is None:
-    #     f_path = os.path.abspath(inspect.getmodule(func).__file__)
-    #     f_path = '/'.join(f_path.split('/')[:-1])
-    #     conf_file = f_path + '/conf.json'
-        
-    # if os.path.isfile(conf_file):
-    #     with open(conf_file) as conf_file_f:
-    #         configure = json.load(conf_file_f)
-    # else:
-        conf_file = '%s/.coffeewhale.json' % os.environ['HOME']
-    if os.path.isfile(conf_file):
-        with open(conf_file) as conf_file_f:
-            configure = json.load(conf_file_f)
-    else:
-        print('configure file is not provided!')
-        sys.exit(0)
-    
-    
-    if 'channel' not in kargs or kargs['channel'] == None:
-        channel = configure['default_channel']
-        if 'channel' in kargs:
-            del kargs['channel']    
-    else:
-        channel = kargs['channel']
-        del kargs['channel']
-    
-    kargs["system"] = os.uname()[1]
+    url = None
+    if "COFFEE_WHALE_URL" in os.environ:
+        url = os.environ['COFFEE_WHALE_URL']
+
+    if "url" in kargs:
+        url = kargs['url']
+        del kargs['url']
+
+    if url is None:
+        raise Exception('Provide url or COFFEE_WHALE_URL')
+
+    kargs["argv"] = sys.argv
+    kargs["system"] = platform.node()
     kargs["user"] = os.getlogin()
     
     my_dict = ""
@@ -110,10 +92,10 @@ def notify(**kargs):
         my_dict += (k + ": " + str(kargs[k]) + "\n")
     mytz = pytz.timezone('Asia/Seoul')
     payload = {"text": "----------[%s]----------\n%s" % (datetime.datetime.now(mytz).strftime('%m-%d %H:%M'), my_dict),
-               "icon_url": configure['icon_url'], "username": configure['username']}
-    url = "https://hooks.slack.com/services/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"
-    
-    url = configure['channel'][channel]
+               "icon_url": 'http://www.coffeewhale.com/content/images/2017/01/coffee_whale_only_bg.png',
+               "username": 'coffee-whale'}
+    # url = "https://hooks.slack.com/services/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"
+
     # print url
     req = Request(url)
     req.add_header('Content-Type', 'application/json')
