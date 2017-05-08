@@ -1,1 +1,1 @@
-from coffeewhale import *
+from coffeewhale.coffeewhale import *
