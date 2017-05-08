@@ -73,6 +73,7 @@ def alarmable(func):
 
 def notify(**kargs):
     url = None
+    print(os.environ)
     if "COFFEE_WHALE_URL" in os.environ:
         url = os.environ['COFFEE_WHALE_URL']
 
