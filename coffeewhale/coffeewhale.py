@@ -78,11 +78,11 @@ def notify(**kargs):
         url = os.environ['COFFEE_WHALE_URL']
         print('in os env: %s' % url)
 
-    if "url" in kargs:
+    if kargs['url'] is not None:
         url = kargs['url']
-        del kargs['url']
         print('in url in kargs: %s' % url)
-
+    del kargs['url']
+    
     if url is None:
         raise Exception('Provide url or COFFEE_WHALE_URL')
 
