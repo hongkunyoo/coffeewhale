@@ -92,7 +92,7 @@ def notify(**kargs):
         my_dict += (k + ": " + str(kargs[k]) + "\n")
     mytz = pytz.timezone('Asia/Seoul')
     payload = {"text": "----------[%s]----------\n%s" % (datetime.datetime.now(mytz).strftime('%m-%d %H:%M'), my_dict),
-               "icon_url": 'http://www.coffeewhale.com/content/images/2017/01/coffee_whale_only_bg.png',
+               "icon_url": 'https://raw.githubusercontent.com/hongkunyoo/coffeewhale/master/coffee_whale_only_bg.png',
                "username": 'coffee-whale'}
     # url = "https://hooks.slack.com/services/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"
 
