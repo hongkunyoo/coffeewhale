@@ -1,14 +1,11 @@
 from __future__ import print_function
 import json
-import os
-import time
 import traceback
 import platform
-import sys
 import datetime
 import pytz
-import ssl
-import inspect
+
+
 try:
     from urllib.request import *
     from urllib.parse import *
@@ -76,9 +73,9 @@ def notify(**kargs):
     if "COFFEE_WHALE_URL" in os.environ:
         url = os.environ['COFFEE_WHALE_URL']
 
-    if kargs['url'] is not None:
+    if 'url' in kargs:
         url = kargs['url']
-    del kargs['url']
+        del kargs['url']
 
     if url is None:
         raise Exception('Provide url or COFFEE_WHALE_URL')
