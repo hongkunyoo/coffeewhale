@@ -4,6 +4,7 @@ import traceback
 import platform
 import datetime
 import pytz
+import os
 
 
 try:
@@ -18,14 +19,6 @@ try:
 except ImportError:
     from io import StringIO
 
-
-glob_conf_path = None
-
-
-def conf(path):
-    global glob_conf_path
-    glob_conf_path = path
-    
 
 def inner_wrapper(func, channel, *args, **kargs):
     
