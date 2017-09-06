@@ -101,7 +101,7 @@ def notify(**kargs):
 
     response = urlopen(req, data=f, context=context)
 
-    if 'return' in kargs
+    if 'return' in kargs:
         return kargs['return']
     return kargs
 
