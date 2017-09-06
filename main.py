@@ -6,7 +6,7 @@ def main():
     test_func()
 
 
-@coffeewhale.alarmable("https://hooks.slack.com/services/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")
+@coffeewhale.alarmable
 def test_func():
     print('start sleeping')
     time.sleep(1)

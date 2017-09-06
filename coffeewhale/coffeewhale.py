@@ -25,7 +25,7 @@ except ImportError:
 
 
 def inner_wrapper(func, channel, *args, **kargs):
-    
+
     start = time.time()
     val = {}
     try:
@@ -51,7 +51,7 @@ def inner_wrapper(func, channel, *args, **kargs):
 
 
 def alarmable(func):
-    
+
     if callable(func):
         def wrapper(*args, **kargs):
             return inner_wrapper(func, None, *args, **kargs)
@@ -70,7 +70,7 @@ def notify(**kargs):
     if "COFFEE_WHALE_URL" in os.environ:
         url = os.environ['COFFEE_WHALE_URL']
 
-    if 'url' in kargs:
+    if 'url' in kargs and kargs['url'] is not None:
         url = kargs['url']
         del kargs['url']
 
@@ -80,7 +80,7 @@ def notify(**kargs):
     kargs["argv"] = sys.argv
     kargs["system"] = platform.node()
     kargs["user"] = os.getlogin()
-    
+
     my_dict = ""
     for k in kargs:
         my_dict += (k + ": " + str(kargs[k]) + "\n")
