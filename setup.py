@@ -9,15 +9,14 @@ from setuptools import setup, find_packages
 #     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = "coffeewhale",
-    version = "0.0.10",
-    author = "Hongkun Yoo",
-    author_email = "hongkunyoo@gmail.com",
-    description = "coffeewhale, a whale that tells you the job is done, when it's done!",
-    license = "MIT License",
-    keywords = "slack api, slack notification",
-    url = "https://github.com/hongkunyoo/coffeewhale",
-    #packages=['azure'],
+    name="coffeewhale",
+    version="0.0.11",
+    author="Hongkun Yoo",
+    author_email="hongkunyoo@gmail.com",
+    description="coffeewhale, a whale that tells you the job is done, when it's done!",
+    license="MIT License",
+    keywords="slack api, slack notification",
+    url="https://github.com/hongkunyoo/coffeewhale",
     packages=find_packages(),
     install_requires=['pytz'],
     long_description="coffeewhale, a whale that tells you the job is done, when it's done!"
