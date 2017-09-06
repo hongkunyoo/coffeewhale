@@ -29,7 +29,8 @@ def inner_wrapper(func, channel, *args, **kargs):
     start = time.time()
     val = {}
     try:
-        func(*args, **kargs)
+        ret = func(*args, **kargs)
+        val['return'] = ret
     except Exception as e:
         tb_output = StringIO()
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -100,6 +101,8 @@ def notify(**kargs):
 
     response = urlopen(req, data=f, context=context)
 
+    if 'return' in kargs
+        return kargs['return']
     return kargs
 
 

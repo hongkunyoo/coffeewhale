@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="coffeewhale",
-    version="0.0.13",
+    version="0.0.14",
     author="Hongkun Yoo",
     author_email="hongkunyoo@gmail.com",
     description="coffeewhale, a whale that tells you the job is done, when it's done!",
