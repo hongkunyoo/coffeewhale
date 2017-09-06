@@ -72,7 +72,7 @@ def notify(**kargs):
 
     if 'url' in kargs and kargs['url'] is not None:
         url = kargs['url']
-        del kargs['url']
+    del kargs['url']
 
     if url is None:
         raise Exception('Provide url or COFFEE_WHALE_URL')
@@ -99,9 +99,9 @@ def notify(**kargs):
     f = f.encode('utf-8')
 
     response = urlopen(req, data=f, context=context)
-    
+
     return kargs
-    
+
 
 @alarmable
 def run(val=1):
