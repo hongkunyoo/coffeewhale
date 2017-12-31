@@ -51,6 +51,49 @@ def inner_wrapper(func, channel, *args, **kargs):
     return notify(**val)
 
 
+def inner_wrapper_except(func, channel, *args, **kargs):
+
+    start = time.time()
+    val = {}
+    ret = None
+    try:
+        ret = func(*args, **kargs)
+        val['return'] = ret
+    except Exception as e:
+        tb_output = StringIO()
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        traceback.print_tb(exc_traceback, file=tb_output)
+        val = dict()
+        val['exception'] = str(e)
+        print(tb_output.getvalue())
+        print(e)
+        # val['exception2'] = str(tb_output.getvalue())
+        end = time.time()
+        val["func_name"] = func.__name__
+        val["url"] = channel
+        elapsed = end - start
+        if elapsed > 1:
+            elapsed = int(elapsed)
+        val["elapse"] = str(datetime.timedelta(seconds=elapsed))
+
+        notify(**val)
+    return ret
+
+
+def on_except(func):
+    if callable(func):
+        def wrapper(*args, **kargs):
+            return inner_wrapper_except(func, None, *args, **kargs)
+        return wrapper
+    else:
+        channel = func
+        def alarmable_call(func):
+            def wrapper(*args, **kargs):
+                return inner_wrapper_except(func, channel, *args, **kargs)
+            return wrapper
+        return alarmable_call
+
+
 def alarmable(func):
 
     if callable(func):
